@@ -1,13 +1,13 @@
 # cython: infer_types=True
 
-from scipy.sparse import issparse, isspmatrix_csc
+from scipy.sparse import issparse, isspmatrix_csc, isspmatrix_lil
 cimport numpy as np
 import numpy as np
 from libc.stdlib cimport free
 
 def sparsesvd(matrix, k):
-    if not isspmatrix_csc(matrix):
-        raise TypeError("First argument must be a scipy.sparse.csc_matrix")
+    if not isspmatrix_csc(matrix) and not isspmatrix_lil(matrix):
+        raise TypeError("First argument must be a scipy.sparse.csc_matrix or scipy.sparse.lil_matrix")
     k = int(k)
 
     cdef SVDRec srec
